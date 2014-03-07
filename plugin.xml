@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="org.apache.cordova.console"
+        version="0.0.1">
+
+  <name>Cordova-CanvasCamera</name>
+  <description>Stream Camera to Canvas/Img tag</description>
+  <license>MIT</license>
+  <keywords>cordova,camera,canvas,img</keywords>
+  <repo>https://github.com/daraosn/Cordova-CanvasCamera.git</repo>
+  <issue>https://github.com/daraosn/Cordova-CanvasCamera/issues/3</issue>
+
+  <platform name="ios">
+    <js-module src="CanvasCamera/CanvasCamera.js" name="CanvasCamera">
+      <clobbers target="CanvasCamera" />
+    </js-module>
+
+    <header-file src="CanvasCamera/CanvasCamera.h" />
+    <source-file src="CanvasCamera/CanvasCamera.m" />
+  </platform>
+  
+</plugin>
