@@ -35,36 +35,35 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CVPixelBufferLockBaseAddress(imageBuffer,0);
-    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
-    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
-    size_t width = CVPixelBufferGetWidth(imageBuffer);
-    size_t height = CVPixelBufferGetHeight(imageBuffer);
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-    
-    CGImageRef newImage = CGBitmapContextCreateImage(newContext);
-    
-    CGContextRelease(newContext);
-    CGColorSpaceRelease(colorSpace);
-    
-    UIImage *image= [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationUp];
-    
-    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-    NSString *encodedString = [imageData base64Encoding];
-    
-    NSString *javascript = @"CanvasCamera.capture('data:image/jpeg;base64,";
-    javascript = [javascript stringByAppendingString:encodedString];
-    javascript = [javascript stringByAppendingString:@"');"];
-    [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:javascript waitUntilDone:YES];
-    
-    CGImageRelease(newImage);
-    CVPixelBufferUnlockBaseAddress(imageBuffer,0);
-    [pool drain];
+    @autoreleasepool {
+        CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        CVPixelBufferLockBaseAddress(imageBuffer,0);
+        uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
+        size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
+        size_t width = CVPixelBufferGetWidth(imageBuffer);
+        size_t height = CVPixelBufferGetHeight(imageBuffer);
+        
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+        
+        CGImageRef newImage = CGBitmapContextCreateImage(newContext);
+        
+        CGContextRelease(newContext);
+        CGColorSpaceRelease(colorSpace);
+        
+        UIImage *image= [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationUp];
+        
+        NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+        NSString *encodedString = [imageData base64Encoding];
+        
+        NSString *javascript = @"CanvasCamera.capture('data:image/jpeg;base64,";
+        javascript = [javascript stringByAppendingString:encodedString];
+        javascript = [javascript stringByAppendingString:@"');"];
+        [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:javascript waitUntilDone:YES];
+        
+        CGImageRelease(newImage);
+        CVPixelBufferUnlockBaseAddress(imageBuffer,0);
+    }
 }
 
 @end
