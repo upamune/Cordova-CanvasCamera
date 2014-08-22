@@ -16,8 +16,6 @@
       <clobbers target="CanvasCamera" />
     </js-module>
 
-    <!-- ios -->
-    <platform name="ios">
 	    <config-file target="config.xml" parent="/*">
 		    <feature name="CanvasCamera">
 			    <param name="ios-package" value="CanvasCamera"/>
@@ -31,8 +29,6 @@
                 
         <!-- System frameworks -->
         <framework src="CoreVideo.framework" weak="true" />
-
-    </platform>
 
   </platform>
   
