@@ -10,14 +10,13 @@
 
 @implementation CanvasCamera
 
-- (void)startCapture:(CDVInvokedUrlCommand*)command
+- (void)startCapture:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     // TODO: add support for options (fps, capture quality, capture format, etc.)
     self.session = [[AVCaptureSession alloc] init];
     self.session.sessionPreset = AVCaptureSessionPreset352x288;
-
-    self.device = [self frontFacingCameraIfAvailable];
-    //self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
+    self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     self.input = [AVCaptureDeviceInput deviceInputWithDevice:self.device error:nil];
     
     self.output = [[AVCaptureVideoDataOutput alloc] init];
@@ -37,7 +36,6 @@
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     @autoreleasepool {
-    
         CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
         CVPixelBufferLockBaseAddress(imageBuffer,0);
         uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
@@ -68,25 +66,4 @@
     }
 }
 
--(AVCaptureDevice *)frontFacingCameraIfAvailable
-{
-    NSArray *videoDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    AVCaptureDevice *captureDevice = nil;
-    for (AVCaptureDevice *device in videoDevices)
-    {
-        if (device.position == AVCaptureDevicePositionFront)
-        {
-            captureDevice = device;
-            break;
-        }
-    }
-
-    //  couldn't find one on the front, so just get the default video device.
-    if ( ! captureDevice)
-    {
-        captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    }
-
-    return captureDevice;
-}
 @end
