@@ -16,8 +16,24 @@
       <clobbers target="CanvasCamera" />
     </js-module>
 
-    <header-file src="CanvasCamera/CanvasCamera.h" />
-    <source-file src="CanvasCamera/CanvasCamera.m" />
+    <!-- ios -->
+    <platform name="ios">
+	    <config-file target="config.xml" parent="/*">
+		    <feature name="CanvasCamera">
+			    <param name="ios-package" value="CanvasCamera"/>
+			    <param name="onload" value="true" />
+		    </feature>
+		    <plugin name="CanvasCamera" value="CanvasCamera"/>
+	    </config-file>
+
+        <header-file src="CanvasCamera.h" />
+        <source-file src="CanvasCamera.m" />
+                
+        <!-- System frameworks -->
+        <framework src="CoreVideo.framework" weak="true" />
+
+    </platform>
+
   </platform>
   
 </plugin>
