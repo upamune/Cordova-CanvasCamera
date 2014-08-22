@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="com.daraosn.Cordova-CanvasCamera"
+        id="net.bitflower.plugins.canvascamera"
         version="0.0.1">
 
-  <name>Cordova-CanvasCamera</name>
+  <name>CanvasCamera</name>
   <description>Stream Camera to Canvas/Img tag</description>
   <license>MIT</license>
-  <keywords>cordova,camera,canvas,img</keywords>
-  <repo>https://github.com/daraosn/Cordova-CanvasCamera.git</repo>
-  <issue>https://github.com/daraosn/Cordova-CanvasCamera/issues/3</issue>
+  
+      <engines>
+        <engine name="cordova" version=">=2.8.0" />
+    </engines>    
+    
+    <js-module src="www/CanvasCamera.js" name="CanvasCamera">
+      <clobbers target="cordova.plugins.canvasCamera" />
+    </js-module>
 
   <platform name="ios">
-    <js-module src="CanvasCamera/CanvasCamera.js" name="CanvasCamera">
-      <clobbers target="CanvasCamera" />
-    </js-module>
 
 	    <config-file target="config.xml" parent="/*">
 		    <feature name="CanvasCamera">
 			    <param name="ios-package" value="CanvasCamera"/>
 			    <param name="onload" value="true" />
 		    </feature>
-		    <plugin name="CanvasCamera" value="CanvasCamera"/>
 	    </config-file>
 
-        <header-file src="CanvasCamera.h" />
-        <source-file src="CanvasCamera.m" />
+        <header-file src="src/CanvasCamera.h" />
+        <source-file src="src/CanvasCamera.m" compiler-flags="-fno-objc-arc"/>
                 
         <!-- System frameworks -->
-        <framework src="CoreVideo.framework" weak="true" />
+        <framework src="CoreVideo.framework" />
 
   </platform>
   
