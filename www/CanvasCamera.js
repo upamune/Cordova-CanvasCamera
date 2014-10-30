@@ -22,9 +22,18 @@ CanvasCamera = {
     cordova.exec(win, lose, "CanvasCamera", "startCapture", [""]);
   },
   capture: function(data) {
-    // LAZYME: Override this function with something like...
-    // CanvasCamera.capture = function(data) {
-    //   document.getElementById('camera').src = data;
-    // }
+    var context = document.getElementById('camera').getContext("2d");
+    var camImage = new Image();
+    camImage.onload = function() {
+      context.drawImage(camImage, 0, 0);
+    };
+    CanvasCamera.capture = function(data) {
+      camImage.src = data;
+    };
+
+     /*CanvasCamera.capture = function(data) {
+       document.getElementById('camera').src = data;
+     }
+    */
   }
 };

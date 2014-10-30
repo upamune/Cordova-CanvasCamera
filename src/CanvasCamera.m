@@ -16,7 +16,7 @@
     self.session = [[AVCaptureSession alloc] init];
     self.session.sessionPreset = AVCaptureSessionPreset352x288;
 
-    self.device = [self frontFacingCameraIfAvailable];
+    self.device = [self getCamera];
     //self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     self.input = [AVCaptureDeviceInput deviceInputWithDevice:self.device error:nil];
     
@@ -32,12 +32,14 @@
     [self.session addOutput:self.output];
     
     [self.session startRunning];
+    NSLog(@"starting canvas camera");
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     @autoreleasepool {
     
+        [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
         CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
         CVPixelBufferLockBaseAddress(imageBuffer,0);
         uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
@@ -62,10 +64,16 @@
         javascript = [javascript stringByAppendingString:encodedString];
         javascript = [javascript stringByAppendingString:@"');"];
         [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:javascript waitUntilDone:YES];
-        
+        //NSLog(@"Image callback");
         CGImageRelease(newImage);
         CVPixelBufferUnlockBaseAddress(imageBuffer,0);
     }
+}
+
+-(AVCaptureDevice *)getCamera{
+  AVCaptureDevice *captureDevice = nil;
+  captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+  return captureDevice;
 }
 
 -(AVCaptureDevice *)frontFacingCameraIfAvailable
