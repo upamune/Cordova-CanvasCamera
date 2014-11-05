@@ -14,7 +14,7 @@
 {
     // TODO: add support for options (fps, capture quality, capture format, etc.)
     self.session = [[AVCaptureSession alloc] init];
-    self.session.sessionPreset = AVCaptureSessionPreset352x288;
+    self.session.sessionPreset = AVCaptureSessionPreset640x480;
 
     self.device = [self getCamera];
     //self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -39,7 +39,9 @@
 {
     @autoreleasepool {
     
-        [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+
+      [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+
         CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
         CVPixelBufferLockBaseAddress(imageBuffer,0);
         uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
@@ -65,6 +67,7 @@
         javascript = [javascript stringByAppendingString:@"');"];
         [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:javascript waitUntilDone:YES];
         //NSLog(@"Image callback");
+        NSLog(@"height width: %f %f",image.size.height,image.size.width);
         CGImageRelease(newImage);
         CVPixelBufferUnlockBaseAddress(imageBuffer,0);
     }

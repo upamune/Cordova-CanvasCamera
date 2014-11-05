@@ -22,10 +22,26 @@ CanvasCamera = {
     cordova.exec(win, lose, "CanvasCamera", "startCapture", [""]);
   },
   capture: function(data) {
-    var context = document.getElementById('camera').getContext("2d");
+    var canvas =  document.getElementById('camera');
+    var context = canvas.getContext("2d");
     var camImage = new Image();
+
     camImage.onload = function() {
-      context.drawImage(camImage, 0, 0);
+      var imageh = 640, imagew = 480;
+      var canvash = canvas.height, canvasw = canvas.width;
+
+      var image_height_more = imageh > imagew;
+
+      var image_new_h = 0, image_new_w = 0;
+      if ( !image_height_more ){
+        image_new_w = canvasw;
+        image_new_h = imageh / imagew * image_new_w;
+      } else {
+        image_new_h = canvash;
+        image_new_w = imagew / imageh * image_new_h;
+      }
+
+      context.drawImage(camImage, 0, 0, image_new_w, image_new_h);
     };
     CanvasCamera.capture = function(data) {
       camImage.src = data;
