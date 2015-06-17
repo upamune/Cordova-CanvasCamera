@@ -65,10 +65,9 @@
         //javascript = [javascript stringByAppendingString:@"');"];
         NSString *strBinary= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
         NSString *imageBinary = @"CanvasCamera.capture('";
-        NSLog(strBinary);
         //imageBinary = [imageBinary stringByAppendingString:strBinary];
         imageBinary = [imageBinary stringByAppendingString:@"');"];
-        //NSLog(imageBinary);
+        NSLog(@"imageBinary => %@", imageBinary);
 
         [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:imageBinary waitUntilDone:YES];
         CGImageRelease(newImage);
