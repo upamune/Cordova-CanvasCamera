@@ -62,7 +62,7 @@
         
         // NSData => NSString
         NSString *binaryImageData= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
-        NSLog("binaryImageData => %@", binaryImageData);
+        NSLog(@"binaryImageData => %@", binaryImageData);
         // NSString => javascript
         NSString *javascript = @"CanvasCamera.capture('";
         // binaryImageData is nil
