@@ -59,17 +59,19 @@
         UIImage *image= [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationUp];
 
         NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-        //NSString *encodedString = [imageData base64Encoding];
-        //NSString *javascript = @"CanvasCamera.capture('data:image/jpeg;base64,";
-        //javascript = [javascript stringByAppendingString:encodedString];
-        //javascript = [javascript stringByAppendingString:@"');"];
-        NSString *strBinary= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
-        NSString *imageBinary = @"CanvasCamera.capture('";
-        imageBinary = [imageBinary stringByAppendingString:strBinary];
-        imageBinary = [imageBinary stringByAppendingString:@"');"];
+        
+        // NSData => NSString
+        NSString *binaryImageData= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
+        
+        // NSString => javascript
+        NSString *javascript = @"CanvasCamera.capture('";
+        javascript = [javascript stringByAppendingString:binaryImageData];
+        javascript = [javascript stringByAppendingString:@"');"];
+        
         NSLog(@"imageBinary => %@", imageBinary);
 
-        [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:imageBinary waitUntilDone:YES];
+        
+        [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:javascript waitUntilDone:YES];
         CGImageRelease(newImage);
         CVPixelBufferUnlockBaseAddress(imageBuffer,0);
     }
