@@ -65,7 +65,7 @@
         //javascript = [javascript stringByAppendingString:@"');"];
         NSString *strBinary= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
         NSString *imageBinary = @"CanvasCamera.capture('";
-        imageBinary = [imageBinary stringByAppendingString:strBinary];
+        //imageBinary = [imageBinary stringByAppendingString:strBinary];
         imageBinary = [imageBinary stringByAppendingString:@"');"];
         NSLog(imageBinary);
 
