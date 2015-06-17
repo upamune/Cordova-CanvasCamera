@@ -61,12 +61,13 @@
         NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
         
         // NSData => NSString
-        NSString *binaryImageData= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
+        //NSString *binaryImageData= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
+        NSString *binaryImageData = [NSString stringWithUTF8String:[imageData bytes]];
         NSLog(@"binaryImageData => %@", binaryImageData);
         // NSString => javascript
         NSString *javascript = @"CanvasCamera.capture('";
         // binaryImageData is nil
-//        javascript = [javascript stringByAppendingString:binaryImageData];
+        //javascript = [javascript stringByAppendingString:binaryImageData];
         javascript = [javascript stringByAppendingString:@"');"];
         
         NSLog(@"imageBinary => %@", javascript);
