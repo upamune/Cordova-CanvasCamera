@@ -9,7 +9,7 @@ It uses *AVCaptureVideoDataOutput* to create a capture session. Each frame is ba
 ### How to Install
 ***
 
-cordova plugin add https://github.com/bitflower/Cordova-CanvasCamera.git
+cordova plugin add https://github.com/upamune/Cordova-CanvasCamera.git
 
 ### How to Use
 ***
@@ -23,7 +23,7 @@ Configuration for ````<img>````:
       }
     </script>
 
-Configuration for ````<canvas>````: 
+Configuration for ````<canvas>````:
 
     <canvas id="camera" width="352" height="288"></canvas>
     <script>

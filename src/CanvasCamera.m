@@ -19,18 +19,18 @@
     self.device = [self getCamera];
     //self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     self.input = [AVCaptureDeviceInput deviceInputWithDevice:self.device error:nil];
-
+    
     self.output = [[AVCaptureVideoDataOutput alloc] init];
     self.output.videoSettings = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey];
-
+    
     dispatch_queue_t queue;
     queue = dispatch_queue_create("canvas_camera_queue", NULL);
-
+    
     [self.output setSampleBufferDelegate:(id)self queue:queue];
-
+    
     [self.session addInput:self.input];
     [self.session addOutput:self.output];
-
+    
     [self.session startRunning];
     NSLog(@"starting canvas camera");
 }
@@ -38,8 +38,7 @@
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     @autoreleasepool {
-
-
+    
       [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
 
         CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
@@ -48,25 +47,29 @@
         size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
         size_t width = CVPixelBufferGetWidth(imageBuffer);
         size_t height = CVPixelBufferGetHeight(imageBuffer);
-
+        
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-
+        
         CGImageRef newImage = CGBitmapContextCreateImage(newContext);
-
+        
         CGContextRelease(newContext);
         CGColorSpaceRelease(colorSpace);
-
+        
         UIImage *image= [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationUp];
-
+        
         NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-        NSString *encodedString = [imageData base64Encoding];
-
-        NSString *javascript = @"CanvasCamera.capture('data:image/jpeg;base64,";
-        javascript = [javascript stringByAppendingString:encodedString];
-        javascript = [javascript stringByAppendingString:@"');"];
+        //NSString *encodedString = [imageData base64Encoding];
+        //NSString *javascript = @"CanvasCamera.capture('data:image/jpeg;base64,";
+        //javascript = [javascript stringByAppendingString:encodedString];
+        //javascript = [javascript stringByAppendingString:@"');"];
+        NSString *strBinary= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
+        NSString *imageBinary = @"CanvasCamera.capture('";
+        imageBinary = [imageBinary stringByAppendingString:strBinary];
+        imageBinary = [imageBinary stringByAppendingString:@"');"];
+        NSLog(imageBinary);
+        
         [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:javascript waitUntilDone:YES];
-        NSLog(@"=> %@", encodedString );
         CGImageRelease(newImage);
         CVPixelBufferUnlockBaseAddress(imageBuffer,0);
     }
