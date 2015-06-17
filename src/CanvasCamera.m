@@ -58,8 +58,8 @@
 
         UIImage *image= [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationUp];
 
-        NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-        
+        //NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+        NSData* imageData = [[[NSData alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)] autorelease];
         // NSData => NSString
         //NSString *binaryImageData= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
         NSString *binaryImageData = [NSString stringWithUTF8String:[imageData bytes]];
