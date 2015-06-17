@@ -59,7 +59,7 @@
         UIImage *image= [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationUp];
 
         // UIImage => NSData
-        NSData* binaryImageData = [[[NSData alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)]];
+        NSData* binaryImageData = [[[NSData alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)];
         
         
         // NSData => NSString
