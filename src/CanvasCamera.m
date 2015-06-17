@@ -61,7 +61,7 @@
         // UIImage => NSData
         NSData* imageData = [[[NSData alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)] autorelease];
         
-        NSLog(@"imageData => %@", imageData);
+//        NSLog(@"imageData => %@", imageData);
         
         // NSData => NSString
         NSString *binaryImageString = [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
