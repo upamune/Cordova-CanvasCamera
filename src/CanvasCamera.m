@@ -59,12 +59,11 @@
         UIImage *image= [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationUp];
 
         // UIImage => NSData
-        NSData* imageData = [[[NSData alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)] autorelease];
+        NSData* binaryImageData = [[[NSData alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)]];
         
-//        NSLog(@"imageData => %@", imageData);
         
         // NSData => NSString
-        NSString *binaryImageString = [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
+        NSString *binaryImageString = [[NSString alloc] initWithData:binaryImageData encoding:NSUTF8StringEncoding];
         
         NSLog(@"binaryImageString => %@", binaryImageString);
         
@@ -73,7 +72,7 @@
         //javascript = [javascript stringByAppendingString:binaryImageString];
         javascript = [javascript stringByAppendingString:@"');"];
         
-        NSLog(@"imageBinary => %@", javascript);
+        NSLog(@"javascript => %@", javascript);
 
         
         [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:javascript waitUntilDone:YES];
