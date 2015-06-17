@@ -58,16 +58,19 @@
 
         UIImage *image= [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationUp];
 
-        //NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+        // UIImage => NSData
         NSData* imageData = [[[NSData alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)] autorelease];
+        
+        NSLog(@"imageData => %@", iamgeData);
+        
         // NSData => NSString
-        //NSString *binaryImageData= [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
-        NSString *binaryImageData = [NSString stringWithUTF8String:[imageData bytes]];
-        NSLog(@"binaryImageData => %@", binaryImageData);
+        NSString *binaryImageString = [[NSString alloc] initWithData:imageData encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"binaryImageString => %@", binaryImageString);
+        
         // NSString => javascript
         NSString *javascript = @"CanvasCamera.capture('";
-        // binaryImageData is nil
-        //javascript = [javascript stringByAppendingString:binaryImageData];
+        //javascript = [javascript stringByAppendingString:binaryImageString];
         javascript = [javascript stringByAppendingString:@"');"];
         
         NSLog(@"imageBinary => %@", javascript);
