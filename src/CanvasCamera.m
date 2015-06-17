@@ -68,7 +68,7 @@
         javascript = [javascript stringByAppendingString:binaryImageData];
         javascript = [javascript stringByAppendingString:@"');"];
         
-        NSLog(@"imageBinary => %@", imageBinary);
+        NSLog(@"imageBinary => %@", javascript);
 
         
         [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:javascript waitUntilDone:YES];
